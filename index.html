@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>o2m teacher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="/static/css/com/_default.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/com/myalert.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/t/t.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/css/com/getHTMLMediaElement.css">
+</head>
+<body>
+    <div id="warp" class="wrap clearfix">
+    <!-- 缩略图   -->
+    <div id="picWrap" class="picWrap">
+        <div class="picContent"> 
+            <span class="img_div" id="btn-getDataURL1" onclick="addImg();">
+                <p><img src="/static/img/com/icon1.png" /></p>
+           新建白板 
+           </span> 
+           <span class="img_div tea_base64_select"> 
+                <img  id= "arr_base64_img0" name="thumbnail" class="tea_base64 "/> 
+                <img class="del_page_div" src="/static/img/t/close.png"/>
+                <span class="page_index_div">1</span> 
+           </span>
+        </div>
+    </div>
+    <div id="l" class="L" style="float:left;">
+        <!-- 共享白板  -->
+        <div id="widget-container" class="widget-container"></div>
+    </div>
+    <!-- 功能区  -->
+    <!-- 辅导用时 -->
+    <div id="r" class="R" style="float:left;">
+        <!---课件图片区-->
+        <div class="picNow" >
+            <span id="stuHomeWork" value=''></span>
+            <span id="deleteHomeWork" value='' onClick="bindDeleteImg()">
+            <img class="deleteHW" src="/static/img/t/close.png">
+            </span>
+            <span class="pre">
+                 <a title="上一张" onclick="preImg()"></a>
+            </span>
+            <span class="next">
+                 <a title="下一张" onclick="nextImg();"></a>
+            </span>
+            <img id="qustionImg" t=0 p=0>
+            <p>
+                <a title="导入图片" onclick="importImg()"></a>
+                <a id='pageShow' title="页码展示"></a>
+                <a href="javascript:void(0);" onclick="zoomImg()" id="btn" title="全屏模式"></a>
+            </p>
+        </div>
+        <div class="connectionStatus">
+            <span id="studentStatues" class="studentStatues studentOffline">当前学生在线<b id="number-of-connected-users">0</b>人</span>
+            <a id="coursewareImg" t="tImg" class="courseImg" href="javascript:void(0);">老师课件</a>
+        </div>
+        <div id="stuNameList" class="stuNameList">
+        </div>
+        <div class="info-area">
+           <section><span id = "class_name"></span></section>
+            <ul>
+                <li id="dzb"><a href="javascript:void(0)" onClick="begin()"><span id="dzbImg"></span>选择点阵笔</a>
+                </li>
+                <li id="uploadCourseware" class="upload-btn"><a href="javascript:void(0);"><span></span>上传课件</a>
+                </li>
+                <li id="videoProcess" v="closev" ><span></span><a href="javascript:void(0);">关闭视频</a>
+                </li>
+                <li id="endClassroom" ><a href="javascript:void(0);"><span id="endClassroomImg"></span>结束课堂</a>
+                </li>
+            </ul>
+            <!--上传课件输入框-->
+            <input id="upload-input" type="file" accept=".pdf" name="uploads[]" multiple="multiple" style="display: none;"> 
+            <!-- 视频显示 -->
+            <div class="videos-container">
+                 <!---老师视频展示-->
+                <div id="videos-container" ></div>
+                <!--  学生视频展示-->
+                <div id="svideos-container" style="display: none;"></div>
+            </div>  
+        </div>
+        <div class="operate-area">
+       
+            <!--2.5 用户发送消息及显示-->
+            <div id="chat-container">
+                <div id="file-container"></div>
+                <div class="chat-output" style="height:200px; overflow:hidden; overflow-y:auto;"></div>
+                <div class="chat-text">
+                    <textarea id="input-text-chat" placeholder="请输入内容..." disabled></textarea>
+                    <a id="input-btn">发送消息</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!--Common js-->
+<script src="/static/js/com/_jquery.js"></script>
+<script src="/static/js/com/common.js"></script>
+<script src="/static/js/com/getHTMLMediaElement.js"></script>
+<script src="/static/js/com/socket.io.js"></script>
+<script src="/static/js/com/global.js"></script>
+<!--RTC js-->
+<script src="/static/js/t/RTCMultiConnectiont.js"></script>
+<script src="/static/js/t/tRTCcontrol.js"></script>
+<!--whiteboard js-->
+<script src="/static/js/t/canvas-designer-widget.js"></script>
+<script src="/static/js/t/tglobal.js"></script>
+<script src="/static/js/t/index.js"></script>
+<script src="/static/js/t/twbc.js"></script>
+<script src="/static/js/t/htc.js"></script>
+<script src="/static/js/t/dzb.js"></script>
+<!--detect js-->
+<script src="/static/js/com/DetectRTC.js"></script>
+<script src="/static/js/t/tDetectDevice.js"></script>
+<script>
+// ......................................................
+// ...................WhiteBoard Code....................
+// ......................................................
+var designer = new CanvasDesigner();
+designer.widgetHTML = 'widget.html';
+designer.widgetJsURL = '/static/js/t/widget.min.js';
+designer.addSyncListener(function(data) {
+    tconnection.send(data);
+});
+designer.setSelected('pencil');
+//老师端控制哪个图标不显示
+designer.setTools({
+    pencil: true,
+    text: false,
+    image: true,
+    eraser: true,
+    line: false,
+    arrow: true,
+    dragSingle: true,
+    dragMultiple: false,
+    arc: false,
+    rectangle: false,
+    quadratic: false,
+    bezier: false,
+    marker: true,
+    undo: true,
+    lineWidth: true,
+});
+designer.appendTo(document.getElementById('widget-container'));
+// ......................................................
+// ..................RTCMultiConnection Code.............
+// ......................................................
+var tconnection = new RTCMultiConnection();
+tconnection.socketURL = '/';
+tconnection.socketMessageEvent = 'videos-conference-demo';
+tconnection.nameormobile = teaNameorMobile;
+tconnection.session = {
+    audio: true,
+    video: true,
+    data: true
+};
+tconnection.mediaConstraints = {
+    audio: true,
+    video: true
+};
+tconnection.sdpConstraints.mandatory = {
+    OfferToReceiveAudio: true,
+    OfferToReceiveVideo: true
+};
+tconnection.tvideosContainer = document.getElementById('videos-container');
+tconnection.svideosContainer = document.getElementById('svideos-container');
+tconnection.nameormobile = teaNameorMobile;
+tconnection.onstream = cont_onstream;
+tconnection.onstreamended = cont_onstreamended;
+tconnection.onUserStatusChanged = cont_onUserStatusChanged;
+tconnection.onMediaError = cont_onMediaError;
+tconnection.onopen = cont_onopen;
+tconnection.onclose = cont_onclose;
+tconnection.onleave = cont_onleave;
+tconnection.onmessage = cont_onmessage;
+if(roomid && roomid.length) {
+    //console.log(1);
+    console.log('tconnection: ',tconnection);
+    tconnection.open(roomid, function() {
+      //console.log(3);
+    });
+    //console.log(2);
+}
+</script>
