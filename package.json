@@ -1,0 +1,8 @@
+{
+  "name": "webrtc-demo",
+  "version": "0.0.1",
+  "description": "some try on webrtc",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
