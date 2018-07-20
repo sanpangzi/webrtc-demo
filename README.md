@@ -1,6 +1,6 @@
 # webrtc-demo
 ==================
-need do 
+##need do 
 -----------------
-## 1 get camera and show 
-## 2 change video  resolution
+### 1 get camera and show 
+### 2 change video  resolution
