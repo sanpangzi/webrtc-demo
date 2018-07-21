@@ -1,6 +1,20 @@
 # webrtc-demo
 ==================
-## need do 
+## Install On Your Own Site for windows and linux
 -----------------
-### 1 get camera and show 
-### 2 change video  resolution
+### step1: git clone https://github.com/sanpangzi/webrtc-demo.git ./ 
+### step2: npm install --production
+### or
+### step1: download the ZIP and unzip
+### step2: cd your direction and npm install --production
+
+## Run server.js
+-------------------
+### node server.js
+### or
+### sudo node server.js
+
+
+## visit  in the browser
+-------------------
+### https://localhost:9002/demos/get_camera_stream.html
