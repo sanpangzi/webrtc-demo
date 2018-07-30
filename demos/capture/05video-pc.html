@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta itemprop="description" content="Client-side WebRTC code samples">
+    <meta itemprop="image" content="/static/img/webrtc-icon-192x192.png">
+    <meta itemprop="name" content="WebRTC code samples">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+    <base target="_blank">
+    <title>Video to peer connection</title>
+    <link rel="icon" sizes="192x192" href="/static/img/webrtc-icon-192x192.png">
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/css/main.css">
+<style type="text/css">
+  video {
+    margin: 0 10px 0 0;
+    width: calc(50% - 7px);
+  }
+
+  video:last-of-type {
+    margin-right: 0;
+  }
+
+  @media screen and (max-width: 400px) {
+    video {
+      margin: 0 5px 20px 0;
+      width: calc(50% - 5px);
+    }
+  }
+</style>
+</head>
+<body>
+<div id="container">
+    <h1><a href="#" title="WebRTC samples homepage">WebRTC samples</a><span>Stream from a video to a peer connection</span>
+    </h1>
+    <video id="leftVideo" playsinline controls muted>
+      <source src="/static/video/chrome.webm" type="video/webm">
+      <source src="/static/video/chrome.mp4" type="video/mp4">
+        <p>This browser does not support the video element.</p>
+      </video>
+      <video id="rightVideo" playsinline autoplay controls></video>
+
+      <p>This demo requires Firefox 47, Chrome 53 with <strong>Experimental Web Platform features</strong> enabled from<tt>chrome://flags</tt>.</p>
+
+      <p>A stream is captured from the video on the left using the <code>captureStream()</code> method, and streamed via a peer connection to the video element on the right.</p>
+
+      <p>View the browser console to see logging.</p>
+
+      <p>Several variables are in global scope, so you can inspect them from the console: <code>localPeerConnection</code>,<code>remotePeerConnection</code> and <code>stream</code>.</p>
+  </div>
+</body>
+</html>
+<script src="/static/js/lib/adapter.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/main13.js" async></script>
+<script src="/static/js/lib/ga.js"></script>
