@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta itemprop="description" content="Client-side WebRTC code samples">
+    <meta itemprop="image" content="/static/img/webrtc-icon-192x192.png">
+    <meta itemprop="name" content="WebRTC code samples">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+    <base target="_blank">
+    <title>Transfer a file</title>
+    <link rel="icon" sizes="192x192" href="/static/img/webrtc-icon-192x192.png">
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        div.progress, div#bitrate {
+          margin: 0 0 1em 0;
+        }
+
+        div.progress div.label {
+          display: inline-block;
+          font-weight: 400;
+          width: 8.2em;
+        }
+
+        form {
+          margin: 0 0 1em 0;
+          white-space: nowrap;
+        }
+
+        progress {
+          width: calc(100% - 8.5em);
+        }
+    </style>
+</head>
+<body>
+  <div id="container">
+
+    <h1><a href="#" title="WebRTC samples homepage">WebRTC samples</a> <span>Transfer a file</span></h1>
+    <section>
+
+      <p>This page shows how to transfer a file via WebRTC datachannels.</p>
+
+      <p>To accomplish this in an interoperable way, the file is split into chunks which are then transferred via the datachannel. The datachannel is reliable and ordered by default which is well-suited to filetransfers.</p>
+
+      <p>Send and receive progress is monitored using HTML5 <i>progress</i> elements.</p>
+
+      <p>At the receiver, the file is reassembled using the Blob API and made available for download.</p>
+
+      <p>Note: real-world applications require a file transfer protocol to send metadata about the file (such as the filename, type, size, last modification date, hash, ...).This information can be conveyed either via the signaling channel or in-band. The demo elides this by assuming knowledge of the file size at the receiver and closes both the datachannel and the peerconnection when the correct amount of bytes has been received.</p>
+
+    </section>
+
+    <section>
+      <form id="fileInfo">
+        <input type="file" id="fileInput" name="files"/>
+      </form>
+
+      <div class="progress">
+        <div class="label">Send progress: </div>
+        <progress id="sendProgress" max="0" value="0"></progress>
+      </div>
+
+      <div class="progress">
+        <div class="label">Receive progress: </div>
+        <progress id="receiveProgress" max="0" value="0"></progress>
+      </div>
+
+      <div id="bitrate"></div>
+      <a id="download"></a>
+      <span id="status"></span>
+    </section>
+  </div>
+</body>
+</html>
+<script src="/static/js/lib/adapter.js"></script>
+<script src="/static/js/common.js"></script>
+<script src="/static/js/main19.js" async></script>
+<script src="/static/js/lib/ga.js"></script>
